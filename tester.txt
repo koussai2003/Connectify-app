@@ -1,0 +1,75 @@
+export async function POST(req: Request) {
+  const profile = await currentProfile();
+
+  if (!profile) {
+    return {
+      status: 403,
+      body: {
+        error: "You must be logged in to create a server",
+      },
+    };
+  }
+
+  const { name, imageUrl } = req.body as {
+    name: string;
+    imageUrl: string;
+  };
+
+  try {
+    const server = await db.server.create({
+      data: {
+        name,
+        members: {
+          connect: {
+            id: profile.id,
+          },
+        },
+        icon: {
+          create: {
+            imageUrl,
+          },
+        },
+      },
+    });
+
+    return {
+      status: 201,
+      body: {
+        id: server.id,
+        name: server.name,
+        icon: server.icon.imageUrl,
+      },
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      status: 500,
+      body: {
+        error: "Failed to create server",
+      },
+    };
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+sudo apt remove firefox
+sudo dpkg -i firefox-previous-version.deb
+sudo apt-mark hold firefox
