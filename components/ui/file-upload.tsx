@@ -11,7 +11,7 @@ interface FileUploadProps {
 }
 
 export const FileUpload = ({ onChange, value, endpoint }: FileUploadProps) => {
-  const [imageUrl, setImageUrl] = useState<string>("");
+  const [imageUrl, setImageUrl] = useState<string | undefined>(value);
 
   const handleUploadComplete = (res: { url: string }[]) => {
     onChange(res?.[0]?.url);
@@ -23,22 +23,23 @@ export const FileUpload = ({ onChange, value, endpoint }: FileUploadProps) => {
     console.log(error);
   };
 
-  const fileType = value?.split(".").pop();
-
-  if (value && fileType !== "pdf" && imageUrl.length > 0) {
-    return (
-      <div className="relative h-20 w-20">
-        <Image fill src={imageUrl} alt="Upload" className="rounded-full" />
-        <button
-          onClick={() => {
-            onChange("");
-          }}
-          className="bg-rose-500 text-white p-1 rounded-full absolute top-0 right-0 shadows-sm ">
-          <X className="h-4 w-4"></X>
-        </button>
-      </div>
-    );
-  }
-
-  return <UploadDropzone endpoint={endpoint} onClientUploadComplete={handleUploadComplete} onUploadError={handleUploadError} />;
+  return (
+    <>
+      {imageUrl ? (
+        <div className="relative h-20 w-20">
+          <Image src={imageUrl} alt="Upload" className="rounded-full" layout="fill" objectFit="cover" />
+          <button
+            onClick={() => {
+              onChange("");
+              setImageUrl(undefined);
+            }}
+            className="bg-rose-500 text-white p-1 rounded-full absolute top-0 right-0 shadow-sm ">
+            <X className="h-4 w-4" />
+          </button>
+        </div>
+      ) : (
+        <UploadDropzone endpoint={endpoint} onClientUploadComplete={handleUploadComplete} onUploadError={handleUploadError} />
+      )}
+    </>
+  );
 };
