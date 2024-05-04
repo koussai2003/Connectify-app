@@ -33,7 +33,7 @@ export const CreateChannelModal = () => {
   const params = useParams();
 
   const isModalOpen = isOpen && type === "createChannel";
-  const {channelType} = data;
+  const { channelType } = data;
 
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -44,10 +44,9 @@ export const CreateChannelModal = () => {
   });
 
   useEffect(() => {
-    if(channelType){
+    if (channelType) {
       form.setValue("type", channelType);
-    }
-    else{
+    } else {
       form.setValue("type", ChannelType.TEXT);
     }
   }, [channelType, form]);
@@ -56,7 +55,7 @@ export const CreateChannelModal = () => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       const url = qs.stringifyUrl({
-        url: "/api/chennels",
+        url: "/api/channels",
         query: {
           serverId: params?.serverId,
         },
