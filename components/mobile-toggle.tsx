@@ -8,7 +8,11 @@ import { NavigationSideBar } from "@/components/navigation/navigation-sidebar";
 import { ServerSidebar } from "@/components/server/server-sidebar";
 
 
-export const MobileToggle = () => {
+export const MobileToggle = ({
+    serverId
+}: {
+    serverId : string;
+} ) => {
     return (
         <Sheet>
             <SheetTrigger asChild>
@@ -20,7 +24,7 @@ export const MobileToggle = () => {
         <div className="w-[72px]">
             <NavigationSideBar />
         </div>
-        <ServerSidebar />
+        <ServerSidebar serverId={serverId} />
         </SheetContent>
 
         </Sheet>
