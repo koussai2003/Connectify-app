@@ -33,7 +33,8 @@ export const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
   if (!profile) {
     return redirect("/");
   }
-  const server = await db.server.findUnique({
+  // findUnique is the original but encountering errors to bypass the error change it to findFirst
+  const server = await db.server.findFirst({
     where: {
       id: serverId,
     },
